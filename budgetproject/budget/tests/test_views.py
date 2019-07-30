@@ -9,12 +9,12 @@ class TestViews(TestCase):
         self.client = Client()
         self.list_url = reverse('list')
         self.detail_url = reverse('detail', args=['project1'])
-        Project.objects.create(
+        self.project1 = Project.objects.create(
                 name='project1',
                 budget=10000)
 
     def test_project_list_GET(self):
-        response = self.client.get(reverse(self.list_url))
+        response = self.client.get(self.list_url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'budget/project-list.html')
 
@@ -37,7 +37,7 @@ class TestViews(TestCase):
                 })
 
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(self.project1.expense.first().title, 'expense1')
+        self.assertEquals(self.project1.expenses.first().title, 'expense1')
 
 
 
